@@ -10,7 +10,15 @@ class CreateUserUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ email, name }: IRequest): User {
-    // Complete aqui
+    const emailAlredyTaken = this.usersRepository.findByEmail(email);
+
+    if (emailAlredyTaken) {
+      throw new Error("Email alredy taken.");
+    }
+
+    const user = this.usersRepository.create({ email, name });
+
+    return user;
   }
 }
 
